@@ -40,12 +40,14 @@ def main():
 	parser.add_argument("-ct", "--convtype", nargs="?", type=str, default="unoserver",
 						help="conversion type, either \"msoffice\" or \"unoserver\"")
 	parser.add_argument("-k", "--kill", action="store_true", help="kill convert server after conversion")
+	parser.add_argument("-o", "--output-folder", type=Path, help="path where to store the converted documents")
 	p = parser.parse_args()
 	if p.processes is not None:
 		proc_count = p.processes
 	else:
 		proc_count = os.cpu_count()  # Default to cpu count
 	conv_type = p.convtype
+	output_path = p.output_folder
 	infile_path_list = p.infiles
 	infile_path_list = list(filter(lambda x: x.suffix == ".docx" or x.suffix == ".doc", infile_path_list))
 	infile_path_list.sort(key=lambda x: x.stat().st_size)  # Sort them according to filesize
@@ -58,7 +60,7 @@ def main():
 			time.sleep(1)  # We need to do this because unoserver does not start immediately, and so if we don't wait a short bit, the converters may throw an error.
 							# Should probably find a way to be able to tell when the server is working.
 		pool = multiprocessing.Pool(processes=proc_count)  # We do not care about order, so we can use a pool of workers for conversion
-		pool.starmap(unoserver_worker.convert_to_pdf, zip(infile_path_list, repeat(UNOSERVER_PORT)))
+		pool.starmap(unoserver_worker.convert_to_pdf, zip(infile_path_list, repeat(UNOSERVER_PORT), repeat(output_path)))
 		if p.kill:
 			os.system("pkill unoserver")  # Kill all the servers if the kill flag is set
 
