@@ -49,7 +49,8 @@ def main():
 	conv_type = p.convtype
 	output_path = p.output_folder
 	infile_path_list = p.infiles
-	infile_path_list = list(filter(lambda x: x.suffix == ".docx" or x.suffix == ".doc", infile_path_list))
+	supported_formats = [".docx", ".doc", ".xls", ".xlsx"]
+	infile_path_list = list(filter(lambda x: x.suffix in supported_formats, infile_path_list))
 	infile_path_list.sort(key=lambda x: x.stat().st_size)  # Sort them according to filesize
 	proc_count = min(proc_count, len(infile_path_list))  # Don't make more workers than files to convert
 	if conv_type == "unoserver":
