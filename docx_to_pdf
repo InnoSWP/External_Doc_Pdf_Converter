@@ -29,8 +29,9 @@ then
     cleanup
     exit 3
   else
-    ln -sf /usr/lib/python3/dist-packages/uno.py venv/lib/python3.10/site-packages/uno.py
-    ln -sf /usr/lib/python3/dist-packages/unohelper.py venv/lib/python3.10/site-packages/unohelper.py
+    python_major=$(python3 --version | sed "s/Python //" | sed "s/.[0-9]*$//")
+    ln -sf /usr/lib/python3/dist-packages/uno.py "venv/lib/python$python_major/site-packages/uno.py"
+    ln -sf /usr/lib/python3/dist-packages/unohelper.py "venv/lib/python$python_major/site-packages/unohelper.py"
   fi
 fi
 
