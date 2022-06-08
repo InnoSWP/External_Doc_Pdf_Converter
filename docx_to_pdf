@@ -5,36 +5,12 @@ cleanup() {
   rm -rf "$SCRIPT_DIR/venv"
 }
 
-if [[ ! -d "$SCRIPT_DIR/venv" ]]
+"$SCRIPT_DIR"/scripts/create_venv "$SCRIPT_DIR"
+if [ $? -ne 0 ]
 then
-  python3 -m venv "$SCRIPT_DIR/venv"
-  ret=$?
-  if [ $ret -ne 0 ]
-  then
-    echo "Error when creating virtual environment. Are python3 and python3-venv installed?"
-    cleanup
-    exit 1
-  fi
-  "$SCRIPT_DIR"/venv/bin/pip3 install -r "$SCRIPT_DIR"/requirements.txt
-  ret=$?
-  if [ $ret -ne 0 ]
-  then
-    echo "Error installing dependencies."
-    cleanup
-    exit 2
-  fi
-  if [[ ! -f "/usr/lib/python3/dist-packages/uno.py" ]]
-  then
-    echo "Cannot find libreoffice conversion libraries. Is libreoffice installed?"
-    cleanup
-    exit 3
-  else
-    python_major=$(python3 --version | sed "s/Python //" | sed "s/.[0-9]*$//")
-    ln -sf /usr/lib/python3/dist-packages/uno.py "venv/lib/python$python_major/site-packages/uno.py"
-    ln -sf /usr/lib/python3/dist-packages/unohelper.py "venv/lib/python$python_major/site-packages/unohelper.py"
-  fi
+  cleanup
 fi
 
-. venv/bin/activate
+. "$SCRIPT_DIR"/venv/bin/activate
 python3 "$SCRIPT_DIR"/src/docx_to_pdf.py "$@"
 deactivate
