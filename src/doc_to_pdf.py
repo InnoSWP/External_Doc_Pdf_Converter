@@ -2,7 +2,7 @@ import argparse
 from pathlib import Path
 import os
 import converters
-from src import utils
+import utils
 
 UNOSERVER_PORT = 2002
 
