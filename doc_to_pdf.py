@@ -33,7 +33,7 @@ def validate_file(f):
 	return f
 
 
-def main():
+def parse_console_arguments():
 	parser = argparse.ArgumentParser("Convert documents to pdf files")
 	parser.add_argument("infiles", nargs="+", type=validate_file, help="documents to convert")
 	parser.add_argument("-p", "--processes", nargs="?", type=int, help="number of processes for parallelization")
@@ -42,29 +42,40 @@ def main():
 	parser.add_argument("-k", "--kill", action="store_true", help="kill convert server after conversion")
 	parser.add_argument("-o", "--output-folder", type=Path, help="path where to store the converted documents")
 	p = parser.parse_args()
+	args = dict()
 	if p.processes is not None:
-		proc_count = p.processes
+		args["proc_count"] = p.processes
 	else:
-		proc_count = os.cpu_count()  # Default to cpu count
-	conv_type = p.convtype
-	output_path = p.output_folder
-	infile_path_list = p.infiles
+		args["proc_count"] = os.cpu_count()  # Default to cpu count
+	args["conv_type"] = p.convtype
+	args["output_path"] = p.output_folder
+	args["infile_path_list"] = p.infiles
+	args["pkill"] = p.kill
+	return args
+
+
+def unoserver_convert(proc_count, conv_type, output_path, infile_path_list, pkill):
 	supported_formats = [".docx", ".doc", ".xls", ".xlsx"]
 	infile_path_list = list(filter(lambda x: x.suffix in supported_formats, infile_path_list))
 	infile_path_list.sort(key=lambda x: x.stat().st_size)  # Sort them according to filesize
 	proc_count = min(proc_count, len(infile_path_list))  # Don't make more workers than files to convert
-	if conv_type == "unoserver":
-		cur_server_count = get_process_count("unoserver")
-		for i in range(cur_server_count, proc_count):  # Create unoservers for parallelization, if we don't have enough present already
-			os.system("nohup unoserver --port {} >/dev/null 2>&1 &".format(UNOSERVER_PORT + i))  # This command creates a detached unoserver so that it doesn't shutdown when the script ends.
-		if cur_server_count != proc_count:
-			time.sleep(1)  # We need to do this because unoserver does not start immediately, and so if we don't wait a short bit, the converters may throw an error.
-							# Should probably find a way to be able to tell when the server is working.
-		pool = multiprocessing.Pool(processes=proc_count)  # We do not care about order, so we can use a pool of workers for conversion
-		pool.starmap(unoserver_worker.convert_to_pdf, zip(infile_path_list, repeat(UNOSERVER_PORT), repeat(output_path)))
-		if p.kill:
-			os.system("pkill unoserver")  # Kill all the servers if the kill flag is set
+	cur_server_count = get_process_count("unoserver")
+	for i in range(cur_server_count, proc_count):  # Create unoservers for parallelization, if we don't have enough present already
+		os.system("nohup unoserver --port {} >/dev/null 2>&1 &".format(UNOSERVER_PORT + i))  # This command creates a detached unoserver so that it doesn't shutdown when the script ends.
+	if cur_server_count != proc_count:
+		time.sleep(1)  # We need to do this because unoserver does not start immediately, and so if we don't wait a short bit, the converters may throw an error.
+						# Should probably find a way to be able to tell when the server is working.
+	pool = multiprocessing.Pool(processes=proc_count)  # We do not care about order, so we can use a pool of workers for conversion
+	pool.starmap(unoserver_worker.convert_to_pdf, zip(infile_path_list, repeat(UNOSERVER_PORT), repeat(output_path)))
+	if pkill:
+		os.system("pkill unoserver")  # Kill all the servers if the kill flag is set
+
+
+def console_main():
+	args = parse_console_arguments()
+	if args["conv_type"] == "unoserver":
+		unoserver_convert(args["proc_count"], args["conv_type"], args["output_path"], args["infile_path_list"], args["pkill"])
 
 
 if __name__ == "__main__":
-	main()
+	console_main()
