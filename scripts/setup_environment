@@ -1,0 +1,11 @@
+#!/bin/bash
+
+if [ "$EUID" -ne 0 ]
+then
+  echo "Run this script as sudo."
+  exit 1
+fi
+
+apt-get update
+apt-get upgrade -y
+apt-get install libreoffice python3 python3-venv python3-pip -y
