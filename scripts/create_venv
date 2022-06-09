@@ -18,13 +18,16 @@ then
     echo "Error installing dependencies."
     exit 2
   fi
-  if [[ ! -f "/usr/lib/python3/dist-packages/uno.py" ]]
+  shopt -s extglob nullglob
+  UNOPATH=( "/usr/lib/python3*/@(dist|site)-packages/uno.py" )
+  if stat --printf='' "${UNOPATH[0]}" 2>/dev/null
   then
     echo "Cannot find libreoffice conversion libraries. Is libreoffice installed?"
     exit 3
   else
+    UNODIR=$(dirname "${UNOPATH[0]}")
     python_major=$(python3 --version | sed "s/Python //" | sed "s/.[0-9]*$//")
-    ln -sf /usr/lib/python3/dist-packages/uno.py "$ROOT_DIR"/venv/lib/python"$python_major"/site-packages/uno.py
-    ln -sf /usr/lib/python3/dist-packages/unohelper.py "$ROOT_DIR"/venv/lib/python"$python_major"/site-packages/unohelper.py
+    ln -sf $UNODIR/uno.py "$ROOT_DIR"/venv/lib/python"$python_major"/site-packages/uno.py
+    ln -sf $UNODIR/unohelper.py "$ROOT_DIR"/venv/lib/python"$python_major"/site-packages/unohelper.py
   fi
 fi
