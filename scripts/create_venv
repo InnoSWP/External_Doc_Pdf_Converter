@@ -9,7 +9,6 @@ then
   if [ $ret -ne 0 ]
   then
     echo "Error when creating virtual environment. Are python3 and python3-venv installed?"
-    cleanup
     exit 1
   fi
   "$ROOT_DIR"/venv/bin/pip3 install -r "$ROOT_DIR"/requirements.txt
@@ -17,13 +16,11 @@ then
   if [ $ret -ne 0 ]
   then
     echo "Error installing dependencies."
-    cleanup
     exit 2
   fi
   if [[ ! -f "/usr/lib/python3/dist-packages/uno.py" ]]
   then
     echo "Cannot find libreoffice conversion libraries. Is libreoffice installed?"
-    cleanup
     exit 3
   else
     python_major=$(python3 --version | sed "s/Python //" | sed "s/.[0-9]*$//")
