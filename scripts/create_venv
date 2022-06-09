@@ -1,0 +1,33 @@
+#!/bin/bash
+
+ROOT_DIR=$1
+
+if [[ ! -d "$ROOT_DIR/venv" ]]
+then
+  python3 -m venv "$ROOT_DIR/venv"
+  ret=$?
+  if [ $ret -ne 0 ]
+  then
+    echo "Error when creating virtual environment. Are python3 and python3-venv installed?"
+    exit 1
+  fi
+  "$ROOT_DIR"/venv/bin/pip3 install -r "$ROOT_DIR"/requirements.txt
+  ret=$?
+  if [ $ret -ne 0 ]
+  then
+    echo "Error installing dependencies."
+    exit 2
+  fi
+  shopt -s extglob nullglob
+  UNOPATH=( "/usr/lib/python3*/@(dist|site)-packages/uno.py" )
+  if stat --printf='' "${UNOPATH[0]}" 2>/dev/null
+  then
+    echo "Cannot find libreoffice conversion libraries. Is libreoffice installed?"
+    exit 3
+  else
+    UNODIR=$(dirname "${UNOPATH[0]}")
+    python_major=$(python3 --version | sed "s/Python //" | sed "s/.[0-9]*$//")
+    ln -sf $UNODIR/uno.py "$ROOT_DIR"/venv/lib/python"$python_major"/site-packages/uno.py
+    ln -sf $UNODIR/unohelper.py "$ROOT_DIR"/venv/lib/python"$python_major"/site-packages/unohelper.py
+  fi
+fi
