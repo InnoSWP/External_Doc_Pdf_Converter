@@ -2,7 +2,6 @@ import tempfile
 import unoserver.converter
 import unoserver.server
 from flask import Flask, request, send_file, redirect
-import os
 
 app = Flask(__name__)
 
