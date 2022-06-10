@@ -1,6 +1,6 @@
 import multiprocessing
 from pathlib import Path
-import subprocess
+import unoserver.converter
 
 
 def convert_to_pdf(file_path: Path, base_server_port, out_path: Path = None):
@@ -16,4 +16,7 @@ def convert_to_pdf(file_path: Path, base_server_port, out_path: Path = None):
 	else:
 		outfile = str(file_path.absolute().parent) + "/" + file_path.absolute().stem + ".pdf"
 	print(outfile)
-	subprocess.Popen(["unoconvert", "--port", str(base_server_port + worker_id), infile, outfile], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+	server_interface = "127.0.0.1"
+	server_port = base_server_port + worker_id
+	converter = unoserver.converter.UnoConverter(server_interface, server_port)
+	converter.convert(inpath=infile, outpath=outfile, convert_to="pdf")
