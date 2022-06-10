@@ -17,7 +17,7 @@ def initialize_converters():
 			break
 
 
-def convert_to_pdf(file_path: Path, base_server_port, out_path: Path = None):
+def convert_to_pdf(file_path: Path, out_path: Path = None):
 	"""
 	:param file_path: Path to the document to be converted
 	:param base_server_port: Server port of the first unoserver
