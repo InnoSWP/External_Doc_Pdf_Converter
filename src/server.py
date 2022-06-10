@@ -1,16 +1,23 @@
 import tempfile
 import unoserver.converter
 import unoserver.server
-from flask import Flask, request, send_file
+from flask import Flask, request, send_file, redirect
+import os
 
 app = Flask(__name__)
 
 server = unoserver.server.UnoServer()
 converter = None
 
+
+@app.route("/<path:path>")
+def get_static_resource(path):
+    return app.send_static_file(path)
+
+
 @app.route("/")
-def index():
-    return "our index.html here"
+def main():
+    return redirect('/index.html')
 
 
 @app.route("/convert", methods=["POST"])
