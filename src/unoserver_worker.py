@@ -8,7 +8,13 @@ converter = None
 def initialize_converters():
 	worker_id = multiprocessing.current_process()._identity[0] - 1
 	global converter
-	converter = unoserver.converter.UnoConverter("127.0.0.1", converters.UNOSERVER_PORT + worker_id)
+	while True:
+		try:
+			converter = unoserver.converter.UnoConverter("127.0.0.1", converters.UNOSERVER_PORT + worker_id)
+		except:
+			pass
+		if converter is not None:
+			break
 
 
 def convert_to_pdf(file_path: Path, base_server_port, out_path: Path = None):
