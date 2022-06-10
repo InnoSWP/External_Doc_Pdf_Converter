@@ -1,7 +1,13 @@
 import multiprocessing
 from pathlib import Path
 import unoserver.converter
+import converters
 
+converter = None
+def initializeConverters():
+	worker_id = multiprocessing.current_process()._identity[0] - 1
+	global converter
+	converter = unoserver.converter.UnoConverter("127.0.0.1", converters.UNOSERVER_PORT + worker_id)
 
 def convert_to_pdf(file_path: Path, base_server_port, out_path: Path = None):
 	"""
@@ -15,8 +21,5 @@ def convert_to_pdf(file_path: Path, base_server_port, out_path: Path = None):
 		outfile = str(out_path.absolute()) + ("/" if str(out_path.absolute())[-1] != "/" else "") + file_path.absolute().stem + ".pdf"
 	else:
 		outfile = str(file_path.absolute().parent) + "/" + file_path.absolute().stem + ".pdf"
-	print(outfile)
-	server_interface = "127.0.0.1"
-	server_port = base_server_port + worker_id
-	converter = unoserver.converter.UnoConverter(server_interface, server_port)
+	# print(outfile)
 	converter.convert(inpath=infile, outpath=outfile, convert_to="pdf")
