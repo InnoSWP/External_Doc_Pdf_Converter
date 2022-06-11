@@ -33,9 +33,6 @@ def complete(result):
 	print_cur_progress()
 
 
-UNOSERVER_PORT = 2002
-
-
 def unoserver_convert(proc_count, output_path, infile_path_list, pkill):
 	supported_formats = [".docx", ".doc", ".xls", ".xlsx"]
 	infile_path_list = list(filter(lambda x: x.suffix in supported_formats, infile_path_list))
