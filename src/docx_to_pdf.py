@@ -4,8 +4,6 @@ import os
 import converters
 import utils
 
-UNOSERVER_PORT = 2002
-
 
 def parse_console_arguments():
 	parser = argparse.ArgumentParser("Convert documents to pdf files")
@@ -31,7 +29,7 @@ def parse_console_arguments():
 def console_main():
 	args = parse_console_arguments()
 	if args["conv_type"] == "unoserver":
-		converters.unoserver_convert(UNOSERVER_PORT, args["proc_count"], args["conv_type"], args["output_path"], args["infile_path_list"], args["pkill"])
+		converters.unoserver_convert(args["proc_count"], args["output_path"], args["infile_path_list"], args["pkill"])
 
 
 if __name__ == "__main__":

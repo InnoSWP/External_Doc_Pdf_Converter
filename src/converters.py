@@ -33,7 +33,7 @@ def complete(result):
 	print_cur_progress()
 
 
-def unoserver_convert(port, proc_count, conv_type, output_path, infile_path_list, pkill):
+def unoserver_convert(proc_count, output_path, infile_path_list, pkill):
 	supported_formats = [".docx", ".doc", ".xls", ".xlsx"]
 	infile_path_list = list(filter(lambda x: x.suffix in supported_formats, infile_path_list))
 	infile_path_list.sort(key=lambda x: x.stat().st_size)  # Sort them according to filesize
@@ -42,7 +42,7 @@ def unoserver_convert(port, proc_count, conv_type, output_path, infile_path_list
 	proc_count = min(proc_count, len(infile_path_list))  # Don't make more workers than files to convert
 	cur_server_count = utils.get_process_count("unoserver")
 	for i in range(cur_server_count, proc_count):  # Create unoservers for parallelization, if we don't have enough present already
-		os.system("nohup unoserver --port {} >/dev/null 2>&1 &".format(port + i))  # This command creates a detached unoserver so that it doesn't shutdown when the script ends.
+		os.system("nohup unoserver --port {} >/dev/null 2>&1 &".format(UNOSERVER_PORT + i))  # This command creates a detached unoserver so that it doesn't shutdown when the script ends.
 	pool = multiprocessing.Pool(processes=proc_count, initializer=unoserver_worker.initialize_converters)  # We do not care about order, so we can use a pool of workers for conversion
 	res = pool.starmap_async(unoserver_worker.convert_to_pdf, zip(infile_path_list, repeat(output_path)), chunksize=1, callback=complete)
 	track_job(res)
