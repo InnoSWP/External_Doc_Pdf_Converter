@@ -4,6 +4,7 @@ import time
 import multiprocessing
 from itertools import repeat
 import utils
+import arguments
 UNOSERVER_PORT = 2002
 worker_progress = 0
 worker_total = 0
@@ -33,7 +34,11 @@ def complete(result):
 	print_cur_progress()
 
 
-def unoserver_convert(proc_count, output_path, infile_path_list, pkill):
+def unoserver_convert(args: arguments.ConversionArguments):
+	proc_count = args.proc_count
+	output_path = args.output_folder
+	infile_path_list = args.input_paths
+	pkill = args.kill
 	supported_formats = [".docx", ".doc", ".xls", ".xlsx"]
 	infile_path_list = list(filter(lambda x: x.suffix in supported_formats, infile_path_list))
 	infile_path_list.sort(key=lambda x: x.stat().st_size)  # Sort them according to filesize

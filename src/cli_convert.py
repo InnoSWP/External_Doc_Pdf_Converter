@@ -3,6 +3,7 @@ from pathlib import Path
 import os
 import converters
 import utils
+import arguments
 
 
 def parse_console_arguments():
@@ -14,22 +15,22 @@ def parse_console_arguments():
 	parser.add_argument("-k", "--kill", action="store_true", help="kill convert server after conversion")
 	parser.add_argument("-o", "--output-folder", type=Path, help="path where to store the converted documents")
 	p = parser.parse_args()
-	args = dict()
+	args = arguments.ConversionArguments()
 	if p.processes is not None:
-		args["proc_count"] = p.processes
+		args.proc_count = p.processes
 	else:
-		args["proc_count"] = os.cpu_count()  # Default to cpu count
-	args["conv_type"] = p.convtype
-	args["output_path"] = p.output_folder
-	args["infile_path_list"] = p.infiles
-	args["pkill"] = p.kill
+		args.proc_count = os.cpu_count()  # Default to cpu count
+	args.conv_type = p.convtype
+	args.output_folder = p.output_folder
+	args.input_paths = p.infiles
+	args.kill = p.kill
 	return args
 
 
 def console_main():
 	args = parse_console_arguments()
-	if args["conv_type"] == "unoserver":
-		converters.unoserver_convert(args["proc_count"], args["output_path"], args["infile_path_list"], args["pkill"])
+	if args.conv_type == "unoserver":
+		converters.unoserver_convert(args)
 
 
 if __name__ == "__main__":
