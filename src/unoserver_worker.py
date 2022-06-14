@@ -1,7 +1,7 @@
 import multiprocessing
 from pathlib import Path
 import unoserver.converter
-import converters
+import unoserver_converter
 converter = None
 
 
@@ -10,7 +10,7 @@ def initialize_converters():
 	global converter
 	while True:
 		try:
-			converter = unoserver.converter.UnoConverter("127.0.0.1", converters.UNOSERVER_PORT + worker_id)
+			converter = unoserver.converter.UnoConverter("127.0.0.1", unoserver_converter.UNOSERVER_PORT + worker_id)
 		except:
 			pass
 		if converter is not None:
