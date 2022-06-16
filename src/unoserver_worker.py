@@ -31,4 +31,7 @@ def convert_to_pdf(file_path: Path, out_path: Path = None):
 	else:
 		outfile = str(file_path.absolute().parent) + "/" + file_path.absolute().stem + ".pdf"
 	# print(outfile)
-	converter.convert(inpath=infile, outpath=outfile, convert_to="pdf")
+	try:
+		converter.convert(inpath=infile, outpath=outfile, convert_to="pdf")
+	except:
+		print("Failed to convert {}".format(infile))
