@@ -1,12 +1,11 @@
 import tempfile
-import unoserver.converter
-import unoserver.server
+from arguments import ConversionArguments
+from converter_manager import ConvertingMethod
+from pathlib import Path
+import argument_processer
 from flask import Flask, request, send_file, redirect
 
 app = Flask(__name__)
-
-server = unoserver.server.UnoServer()
-converter = None
 
 
 @app.route("/<path:path>")
@@ -24,13 +23,12 @@ def convert():
     got = request.files['file']
     tmp = tempfile.NamedTemporaryFile(suffix='.docx')
     got.save(tmp)
-    res = tempfile.NamedTemporaryFile(suffix='.pdf')
-    converter.convert(inpath=tmp.name, outpath=res.name, convert_to='pdf')
-    filename = got.filename[:-5] + '.pdf'
-    return send_file(res.name, as_attachment=True, download_name=filename)
+    args = ConversionArguments([Path(tmp.name)], None, ConvertingMethod.UNOSERVER)
+    print(tmp.name, args.input_paths, args.output_folder)
+    argument_processer.process_arguments(args)
+    filename = tmp.name[:-5] + '.pdf'
+    return send_file(filename, as_attachment=True, download_name=got.filename[:-5] + '.pdf')
 
 
 if __name__ == "__main__":
-    server.start()
-    converter = unoserver.converter.UnoConverter(server.interface, server.port)
     app.run()
