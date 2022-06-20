@@ -51,5 +51,13 @@ jobs:
         uses: github/super-linter@v4
         env:
           VALIDATE_ALL_CODEBASE: false
+          # Python black asks of too much
+          VALIDATE_PYTHON_BLACK: false
+          # Pylint barely works
+          VALIDATE_PYTHON_PYLINT: false
+          # Isort is unnecessary
+          VALIDATE_PYTHON_ISORT: false
+          # Mypy doesn't work
+          VALIDATE_PYTHON_MYPY: false
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
