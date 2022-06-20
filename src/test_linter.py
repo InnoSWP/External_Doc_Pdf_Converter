@@ -1,4 +1,4 @@
 def foo():
-	bar = "a"
-	print("Hello!")
+    bar = "a"
+    print("Hello!")
 foo()
