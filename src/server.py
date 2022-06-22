@@ -23,20 +23,32 @@ def main():
 @app.route("/convert", methods=["POST"])
 def convert():
     got = request.files.getlist('file')
+    if len(got) == 0:
+        return "No files were sent to the server"
     temps = []
     for i in range(len(got)):
+        print(got[i].filename)
+        if not got[i].filename.endswith(".docx"):
+            return "Files with the wrong extension were sent to the server"
         temps.append(tempfile.NamedTemporaryFile(suffix='.docx'))
         got[i].save(temps[-1])
     args = ConversionArguments(list(map(Path, [q.name for q in temps])), None, ConvertingMethod.UNOSERVER)
     argument_processer.process_arguments(args)
     if len(temps) == 1:
-        return send_file(temps[0].name[:-5] + '.pdf', as_attachment=True, download_name=got[0].filename[:-5] + '.pdf')
+        if os.path.exists(temps[0].name[:-5] + '.pdf'):
+            return send_file(temps[0].name[:-5] + '.pdf', as_attachment=True, download_name=got[0].filename[:-5] + '.pdf')
+        else:
+            return "There was a error processing your file, please check if the file is not corrupt"
     archive = tempfile.NamedTemporaryFile(suffix=".zip")
     with zipfile.ZipFile(archive.name, 'w') as arch:
         for i in range(len(got)):
-            arch.write(temps[i].name[:-5] + '.pdf', os.path.basename(got[i].filename[:-5] + '.pdf'))
+            if os.path.exists(temps[i].name[:-5] + '.pdf'):
+                arch.write(temps[i].name[:-5] + '.pdf', os.path.basename(got[i].filename[:-5] + '.pdf'))
+            else:
+                return "There were errors processing your files, please check if the files are not corrupt"
     return send_file(archive.name, as_attachment=True, download_name='documents.zip')
     #TODO: remove pdf files after sending them
+    #returning the error string should be enough to recover, the temporary files will be deleted.
 
 
 if __name__ == "__main__":

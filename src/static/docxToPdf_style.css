@@ -128,3 +128,19 @@ input[type=file]{
     cursor: pointer;
     margin-top: 180px;
 }
+
+#btn_main{
+    font-size: 13px;
+    width: 70px;
+    height: 23px;
+    color: #fff;
+    border-radius: 99px;
+    border: 1px solid #4A536B;
+    font-family: 'Koulen', cursive;
+    padding: 0.5rem 1.5rem;
+    outline: none;
+    background: #4A536B;
+    transition: all 0.22s;
+    cursor: pointer;
+    margin-top: 180px;
+}
