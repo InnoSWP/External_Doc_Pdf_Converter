@@ -23,7 +23,7 @@ def main():
 @app.route("/convert", methods=["POST"])
 def convert():
     got = request.files.getlist('file')
-    if len(got) == 0:
+    if len(got) == 1 and got[0].filename == "":
         return "No files were sent to the server"
     temps = []
     for i in range(len(got)):
