@@ -36,7 +36,9 @@ def convert():
     argument_processer.process_arguments(args)
     if len(temps) == 1:
         if os.path.exists(temps[0].name[:-5] + '.pdf'):
-            return send_file(temps[0].name[:-5] + '.pdf', as_attachment=True, download_name=got[0].filename[:-5] + '.pdf')
+            temp_base = temps[0].name[:-5]
+            original_base = got[0].filename[:-5]
+            return send_file(temp_base + '.pdf', as_attachment=True, download_name = original_base + '.pdf')
         else:
             abort(make_response("The file you sent was corrupt", 400))
     archive = tempfile.NamedTemporaryFile(suffix=".zip")
@@ -47,8 +49,8 @@ def convert():
             else:
                 abort(make_response("Corrupted file was sent to the server: %s" % got[i], 400))
     return send_file(archive.name, as_attachment=True, download_name='documents.zip')
-    #TODO: remove pdf files after sending them
-    #returning the error string should be enough to recover, the temporary files will be deleted.
+    # TODO: remove pdf files after sending them
+    # returning the error string should be enough to recover, the temporary files will be deleted.
 
 
 if __name__ == "__main__":
