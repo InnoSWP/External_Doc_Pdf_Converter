@@ -19,6 +19,7 @@ DEFAULT_CONVERSION_METHOD = ConvertingMethod.UNOSERVER
 
 worker_progress = 0
 worker_total = 0
+workers_created = 0
 
 
 def track_job(job, update_interval=0.1):
@@ -59,3 +60,5 @@ def start_conversion(args: arguments.ConversionArguments):
         unoserver_converter.unoserver_convert(args)
     if conversion_method == ConvertingMethod.DOCX4J:
         pass  # Should be simple to add support for it, with the new structure
+    global workers_created
+    workers_created += args.proc_count
