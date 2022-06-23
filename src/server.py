@@ -3,7 +3,7 @@ from arguments import ConversionArguments
 from converter_manager import ConvertingMethod
 from pathlib import Path
 import argument_processer
-from flask import Flask, request, send_file, redirect
+from flask import Flask, request, send_file, redirect, abort, make_response
 import zipfile
 import os
 
@@ -24,12 +24,12 @@ def main():
 def convert():
     got = request.files.getlist('file')
     if len(got) == 1 and got[0].filename == "":
-        return "No files were sent to the server"
+        abort(make_response("No files were sent to the server", 400))
     temps = []
     for i in range(len(got)):
         print(got[i].filename)
         if not got[i].filename.endswith(".docx"):
-            return "Files with the wrong extension were sent to the server"
+            abort(make_response("File with the wrong extension was sent to the server: %s" % got[i].filename, 400))
         temps.append(tempfile.NamedTemporaryFile(suffix='.docx'))
         got[i].save(temps[-1])
     args = ConversionArguments(list(map(Path, [q.name for q in temps])), None, ConvertingMethod.UNOSERVER)
@@ -38,14 +38,14 @@ def convert():
         if os.path.exists(temps[0].name[:-5] + '.pdf'):
             return send_file(temps[0].name[:-5] + '.pdf', as_attachment=True, download_name=got[0].filename[:-5] + '.pdf')
         else:
-            return "There was a error processing your file, please check if the file is not corrupt"
+            abort(make_response("The file you sent was corrupt", 400))
     archive = tempfile.NamedTemporaryFile(suffix=".zip")
     with zipfile.ZipFile(archive.name, 'w') as arch:
         for i in range(len(got)):
             if os.path.exists(temps[i].name[:-5] + '.pdf'):
                 arch.write(temps[i].name[:-5] + '.pdf', os.path.basename(got[i].filename[:-5] + '.pdf'))
             else:
-                return "There were errors processing your files, please check if the files are not corrupt"
+                abort(make_response("Corrupted file was sent to the server: %s" % got[i], 400))
     return send_file(archive.name, as_attachment=True, download_name='documents.zip')
     #TODO: remove pdf files after sending them
     #returning the error string should be enough to recover, the temporary files will be deleted.
