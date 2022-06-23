@@ -38,7 +38,7 @@ def convert():
         if os.path.exists(temps[0].name[:-5] + '.pdf'):
             temp_base = temps[0].name[:-5]
             original_base = got[0].filename[:-5]
-            return send_file(temp_base + '.pdf', as_attachment=True, download_name = original_base + '.pdf')
+            return send_file(temp_base + '.pdf', as_attachment=True, download_name=original_base + '.pdf')
         else:
             abort(make_response("The file you sent was corrupt", 400))
     archive = tempfile.NamedTemporaryFile(suffix=".zip")
