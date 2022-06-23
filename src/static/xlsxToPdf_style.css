@@ -1,4 +1,4 @@
-body{
+body {
     font-family: 'Koulen', cursive;
     margin: 0;
     color: #ffffff;
@@ -9,14 +9,14 @@ body{
     width: 100%;
 }
 
-.rectangle{
+.rectangle {
     width: 100%;
     height: 100px;
     background-color: #4A536B;
     border-radius: 0 0 10px 10px;
 }
 
-.container{
+.container {
     margin-left: auto;
     margin-right: auto;
     margin-top: 100px;
@@ -28,7 +28,7 @@ body{
     font-size: 25px;
 }
 
-.container1{
+.container1 {
     width: 100%;
     max-width: 350px;
     margin: 0 auto;
@@ -38,17 +38,20 @@ body{
 
 .icons {
     display: flex;
-    width: 100%;    
+    width: 100%;
     justify-content: space-between;
     margin-top: 20px;
 }
 
-.arrow{
+.arrow {
     margin-right: 10px;
+    width: 100px;
+    height: 100px;
+    color: #4A536B;
 }
 
-.buttons{
-    background-color: #4A536B; 
+.buttons {
+    background-color: #4A536B;
     border-radius: 10px;
     height: 34px;
     width: 130px;
@@ -59,35 +62,29 @@ body{
     font-size: 20px;
 }
 
-.container2{
+.container2 {
     width: 100%;
     max-width: 380px;
     margin: 0 auto;
     text-align: center;
 }
 
-.text{
+.text {
     font-size: 18px;
-    position:absolute;
+    position: absolute;
     margin-top: auto;
 }
 
-.files{
+.files {
     max-width: 500px;
-    position:absolute;
+    position: absolute;
     display: flex;
     justify-content: center;
     margin-top: 150px;
     margin-left: 15px;
 }
 
-.arrow{
-    width: 100px;
-    height: 100px;
-    color: #4A536B;
-}
-
-input[type=file]{
+input[type=file] {
     display: none;
 }
 
@@ -100,7 +97,7 @@ input[type=file]{
     justify-content: space-between;
 }
 
-.btn{
+.btn {
     width: 120px;
     color: #fff;
     border-radius: 99px;
@@ -114,9 +111,27 @@ input[type=file]{
     margin-top: 180px;
 }
 
-#btn_primary{
-    width: 120px;
-    height: 41px;
+#btn_primary {
+    width: 110px;
+    height: 42px;
+    color: #fff;
+    border-radius: 99px;
+    border: 1px solid #4A536B;
+    font-family: 'Koulen', cursive;
+    padding: 0.5rem 1.5rem;
+    outline: none;
+    background: #4A536B;
+    transition: all 0.22s;
+    cursor: pointer;
+    margin-top: 180px;
+    margin-left: 5px;
+}
+
+#btn_main {
+    margin-left: 10px;
+    font-size: 13px;
+    width: 110px;
+    height: 23px;
     color: #fff;
     border-radius: 99px;
     border: 1px solid #4A536B;
