@@ -14,3 +14,7 @@ To install dependencies:
  - -k, --kill: Kill the convert server after conversion.
  - -o [OUTPUT-FOLDER], --output-folder [OUTPUT-FOLDER]: Directory where to store the converted documents.
  - infiles: List of files to convert, which must end in .xls or .docx. .xls conversion works only with msoffice conversion method.
+
+# Running server inside docker container
+    docker build -t external_doc_pdf_converter .
+    docker run -it -p 5000:5000 external_doc_pdf_converter
