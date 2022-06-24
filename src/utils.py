@@ -26,6 +26,15 @@ def validate_file(f):
     return f
 
 
+def validate_dir(f):
+    f = Path(f)
+    if not f.exists():
+        raise argparse.ArgumentTypeError("{0} does not exist ".format(f))
+    if not f.is_dir():
+        raise argparse.ArgumentTypeError("{0} is not a directory ".format(f))
+    return f
+
+
 # Print iterations progress
 def print_progress_bar(iteration, total, prefix='', suffix='', decimals=1, length=100, fill='█', print_end="\r"):
     """
