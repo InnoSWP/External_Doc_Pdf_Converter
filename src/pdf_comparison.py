@@ -30,8 +30,6 @@ def compare_two_pdfs(good_pdf: Path, bad_pdf: Path):
     image_good = pdf2image.convert_from_path(good_pdf)
     image_bad = pdf2image.convert_from_path(bad_pdf)
     for (pil_good_image, pil_bad_image) in zip(image_good, image_bad):
-        # np_good_image = np.array(pil_good_image)
-        # np_bad_image = np.array(pil_bad_image)
         np_good_image = crop_np_image(np.array(pil_good_image))
         np_bad_image = crop_np_image(np.array(pil_bad_image))
         ratio = np_good_image.shape[0] / np_bad_image.shape[0]
