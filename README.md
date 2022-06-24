@@ -1,13 +1,13 @@
 # Docx_To_Pdf
 Convert .docx to .pdf on a local machine.
 
-# Requirements
+## Requirements
 Requires LibreOffice and python3 (with pip) installed.
 To install dependencies:
 
     sudo scripts/setup_environment
 
-# Usage
+## Usage
     docx_to_pdf [-h] [-p [PROCESSES]] [-ct [CONVTYPE]] [-k] [-o [OUTPUT-FOLDER]] infiles [infiles ...]
  - -p [PROCESSES], --processes [PROCESSES]: The number of processes to run in parallel for conversion. Defaults to the number of cores on the system.
  - -ct [CONVTYPE], --convtype [CONVTYPE]: The conversion method used, either msoffice or unoserver. Defaults to "msoffice".
@@ -15,6 +15,7 @@ To install dependencies:
  - -o [OUTPUT-FOLDER], --output-folder [OUTPUT-FOLDER]: Directory where to store the converted documents.
  - infiles: List of files to convert, which must end in .xls or .docx. .xls conversion works only with msoffice conversion method.
 
-# Running server inside docker container
+## Running server inside docker container
+    rm -rf venv/
     docker build -t external_doc_pdf_converter .
     docker run -it -p 5000:5000 external_doc_pdf_converter
