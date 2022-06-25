@@ -1,0 +1,27 @@
+---
+name: Run Tests
+on:
+  push:
+    branches-ignore: [master, main]
+  pull_request:
+    branches: [master, main]
+  workflow_dispatch:
+
+
+jobs:
+  build:
+    name: Run unit tests
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Set up environment
+        run: |
+          sudo apt-get update
+          sudo apt-get install \
+            libreoffice-writer python3-uno python3 python3-pip \
+            python3-venv --no-install-recommends -y
+      - name: Run tests
+        run: python3 -m unittest tests/api_test.py
