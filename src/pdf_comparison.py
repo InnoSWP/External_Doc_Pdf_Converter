@@ -6,6 +6,7 @@ import numpy as np
 import cv2
 from PIL import ImageChops
 from PIL import Image
+from skimage.metrics import structural_similarity as compare_ssim
 
 
 def pil_to_np(pil_img):
@@ -25,6 +26,10 @@ def crop_np_image(np_img):
     return rect
 
 
+def resize_img(img, scale):
+    return cv2.resize(img, (int(img.shape[:2][1] * scale), int(img.shape[:2][0] * scale)))
+
+
 def compare_two_pdfs(good_pdf: Path, bad_pdf: Path):
     print("path1", good_pdf, "path2", bad_pdf)
     image_good = pdf2image.convert_from_path(good_pdf)
@@ -32,24 +37,28 @@ def compare_two_pdfs(good_pdf: Path, bad_pdf: Path):
     for (pil_good_image, pil_bad_image) in zip(image_good, image_bad):
         np_good_image = crop_np_image(np.array(pil_good_image))
         np_bad_image = crop_np_image(np.array(pil_bad_image))
-        ratio = np_good_image.shape[0] / np_bad_image.shape[0]
-        new_size = (int(np_bad_image.shape[1] * ratio), int(np_bad_image.shape[0] * ratio))
+        new_size = (int(np_good_image.shape[1]), int(np_good_image.shape[0]))
         np_bad_image = cv2.resize(np_bad_image, new_size)
         pil_good_image = np_to_pil(np_good_image)
         pil_bad_image = np_to_pil(np_bad_image)
+        np_good_gray = cv2.cvtColor(np_good_image, cv2.COLOR_RGB2GRAY)
+        np_bad_gray = cv2.cvtColor(np_bad_image, cv2.COLOR_RGB2GRAY)
+        (score, diff_ssim) = compare_ssim(np_good_gray, np_bad_gray, full=True)
+        diff_ssim = (diff_ssim * 255).astype("uint8")
+        print("SSIM: {}".format(score))
         im_diff = ImageChops.difference(pil_good_image, pil_bad_image)
         np_diff_image = np.array(im_diff)
         size = 0.45
-        resized_good = cv2.resize(np_good_image,
-                                  (int(np_good_image.shape[:2][1] * size), int(np_good_image.shape[:2][0] * size)))
-        resized_bad = cv2.resize(np_bad_image,
-                                 (int(np_bad_image.shape[:2][1] * size), int(np_bad_image.shape[:2][0] * size)))
-        resized_diff = cv2.resize(np_diff_image,
-                                  (int(np_diff_image.shape[:2][1] * size), int(np_diff_image.shape[:2][0] * size)))
+        resized_good = resize_img(np_good_image, size)
+        resized_bad = resize_img(np_bad_image, size)
+        resized_diff = resize_img(np_diff_image, size)
+        resized_ssim = resize_img(diff_ssim, size)
         cv2.imshow("good", resized_good)
         cv2.imshow("bad", resized_bad)
         cv2.imshow("diff", resized_diff)
+        cv2.imshow("ssitm", resized_ssim)
         cv2.waitKey(0)
+    return score
 
 
 def main():
