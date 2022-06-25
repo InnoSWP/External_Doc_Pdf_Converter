@@ -3,6 +3,7 @@ from pathlib import Path
 import unoserver.converter
 import unoserver_converter
 import converter_manager
+import time
 
 converter = None
 
@@ -10,13 +11,15 @@ converter = None
 def initialize_converters():
     # After the converter creates the workers, if the entire program hasn't stopped working (for example - web converter
     # then the ._identity[0] of the workers will keep going up and up, so we need to account for that.
-    worker_id = multiprocessing.current_process()._identity[0] - 1 - converter_manager.workers_created
+    #worker_id = multiprocessing.current_process()._identity[0] - 1 - converter_manager.workers_created
+    worker_id = 0
     global converter
+    time.sleep(1)
     while True:
         try:
             converter = unoserver.converter.UnoConverter("127.0.0.1", unoserver_converter.UNOSERVER_PORT + worker_id)
         except BaseException as err:
-            pass
+            raise err
         if converter is not None:
             break
 
