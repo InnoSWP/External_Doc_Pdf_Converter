@@ -42,3 +42,5 @@ def setUpModule():
     #check if something is listening on port 5000
     while os.system("sudo lsof -i:5000") >> 8 != 0:
         time.sleep(1)
+    print("Ready to run tests")
+    time.sleep(5) #flask still needs a couple of milliseconds even after starting to listen?
