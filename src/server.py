@@ -22,35 +22,37 @@ def main():
 
 @app.route("/convert", methods=["POST"])
 def convert():
+    td = tempfile.TemporaryDirectory()
+    tmp_dir = td.name + "/"
+    original_names = []
+    converted_names = []
     got = request.files.getlist('file')
-    if len(got) == 1 and got[0].filename == "":
+    if len(got) == 1 and got[0].filename == "" or len(got) == 0:
         abort(make_response("No files were sent to the server", 400))
-    temps = []
     for i in range(len(got)):
-        print(got[i].filename)
         if not got[i].filename.endswith(".docx"):
             abort(make_response("File with the wrong extension was sent to the server: %s" % got[i].filename, 400))
-        temps.append(tempfile.NamedTemporaryFile(suffix='.docx'))
-        got[i].save(temps[-1])
-    args = ConversionArguments(list(map(Path, [q.name for q in temps])), None, ConvertingMethod.UNOSERVER)
+        original_names.append(got[i].filename)
+        converted_names.append(got[i].filename[:-5] + ".pdf")
+    for i in range(len(got)):
+        got[i].save(tmp_dir + original_names[i])
+    args = ConversionArguments(list(map(Path, [tmp_dir + q for q in original_names])), None, ConvertingMethod.UNOSERVER)
     argument_processer.process_arguments(args)
-    if len(temps) == 1:
-        if os.path.exists(temps[0].name[:-5] + '.pdf'):
-            temp_base = temps[0].name[:-5]
-            original_base = got[0].filename[:-5]
-            return send_file(temp_base + '.pdf', as_attachment=True, download_name=original_base + '.pdf')
+    if len(got) == 1:
+        f = tmp_dir + converted_names[i]
+        if os.path.exists(f):
+            return send_file(f, as_attachment=True, download_name=converted_names[0])
         else:
             abort(make_response("The file you sent was corrupt", 400))
-    archive = tempfile.NamedTemporaryFile(suffix=".zip")
-    with zipfile.ZipFile(archive.name, 'w') as arch:
+    for i in range(len(got)):
+        f = tmp_dir + converted_names[i]
+        if not os.path.exists(f):
+            abort(make_response("Corrupted file was sent to the server: " + f, 400))
+    archive = tmp_dir + "documents.zip"
+    with zipfile.ZipFile(archive, 'w') as arch:
         for i in range(len(got)):
-            if os.path.exists(temps[i].name[:-5] + '.pdf'):
-                arch.write(temps[i].name[:-5] + '.pdf', os.path.basename(got[i].filename[:-5] + '.pdf'))
-            else:
-                abort(make_response("Corrupted file was sent to the server: %s" % got[i], 400))
-    return send_file(archive.name, as_attachment=True, download_name='documents.zip')
-    # TODO: remove pdf files after sending them
-    # returning the error string should be enough to recover, the temporary files will be deleted.
+            arch.write(tmp_dir + converted_names[i], converted_names[i])
+    return send_file(archive, as_attachment=True)
 
 
 if __name__ == "__main__":
