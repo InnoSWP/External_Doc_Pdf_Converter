@@ -2,15 +2,15 @@ import multiprocessing
 from pathlib import Path
 import unoserver.converter
 import unoserver_converter
-import converter_manager
+import arguments
 
 converter = None
 
 
-def initialize_converters():
+def initialize_converters(args: arguments.ConversionArguments):
     # After the converter creates the workers, if the entire program hasn't stopped working (for example - web converter
     # then the ._identity[0] of the workers will keep going up and up, so we need to account for that.
-    worker_id = multiprocessing.current_process()._identity[0] - 1 - converter_manager.workers_created
+    worker_id = (multiprocessing.current_process()._identity[0] - 1) % args.proc_count
     global converter
     while True:
         try:
