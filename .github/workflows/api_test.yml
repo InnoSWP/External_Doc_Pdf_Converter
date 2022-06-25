@@ -1,3 +1,4 @@
+---
 name: Run Tests
 on:
   push:
@@ -19,6 +20,8 @@ jobs:
       - name: Set up environment
         run: |
           sudo apt-get update
-          sudo apt-get install libreoffice-writer python3-uno python3 python3-pip python3-venv --no-install-recommends -y
+          sudo apt-get install \
+            libreoffice-writer python3-uno python3 python3-pip \
+            python3-venv --no-install-recommends -y
       - name: Run tests
         run: python3 -m unittest tests/api_test.py
