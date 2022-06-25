@@ -32,7 +32,7 @@ def track_job(job, update_interval=0.1):
     global worker_total
     while job._number_left > 0:
         worker_progress = worker_total - job._number_left * job._chunksize
-        print_cur_progress()
+        #print_cur_progress()
         time.sleep(update_interval)
 
 
@@ -43,7 +43,7 @@ def print_cur_progress():
 def complete(result):
     global worker_progress
     worker_progress = worker_total
-    print_cur_progress()
+    #print_cur_progress()
 
 
 def start_conversion(args: arguments.ConversionArguments):
