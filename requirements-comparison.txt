@@ -2,3 +2,4 @@ pdf2image
 numpy
 opencv-python
 Pillow
+scikit-image
