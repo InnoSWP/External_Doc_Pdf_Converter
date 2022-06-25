@@ -2,7 +2,6 @@ import multiprocessing
 from pathlib import Path
 import unoserver.converter
 import unoserver_converter
-import converter_manager
 import arguments
 
 converter = None
