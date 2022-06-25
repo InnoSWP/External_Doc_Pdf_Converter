@@ -43,7 +43,7 @@ def print_cur_progress():
 def complete(result):
     global worker_progress
     worker_progress = worker_total
-    #print_cur_progress()
+    print_cur_progress()
 
 
 def start_conversion(args: arguments.ConversionArguments):
