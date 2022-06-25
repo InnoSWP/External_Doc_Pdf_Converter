@@ -3,7 +3,7 @@ from arguments import ConversionArguments
 from converter_manager import ConvertingMethod
 from pathlib import Path
 import argument_processer
-from flask import Flask, request, send_file, redirect, abort, make_response, after_this_request
+from flask import Flask, request, send_file, redirect, abort, make_response
 import zipfile
 import os
 
