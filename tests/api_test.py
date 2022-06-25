@@ -35,9 +35,10 @@ class TestApi(unittest.TestCase):
         tmp2.close()
 
 import os
+import time
 import subprocess
 def setUpModule():
     subprocess.Popen(["./start_server", ">", "/dev/null", "2&>1"])
     #check if something is listening on port 5000
     while os.system("sudo lsof -i:5000") >> 8 != 0:
-        os.sleep(1)
+        time.sleep(1)
