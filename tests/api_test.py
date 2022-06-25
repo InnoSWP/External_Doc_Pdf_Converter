@@ -5,7 +5,7 @@ server = "http://127.0.0.1:5000"
 
 class TestApi(unittest.TestCase):
     def test_corrupted(self):
-        tmp = open("tests/bad.docx")
+        tmp = open("tests/bad.docx", "rb")
         files = {"file": tmp}
         response = requests.post(server + "/convert", files=files)
         self.assertEqual(response.status_code, 400)
