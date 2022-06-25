@@ -1,7 +1,12 @@
 import unittest
 import requests
+import os
+import time
+import subprocess
+
 
 server = "http://127.0.0.1:5000"
+
 
 class TestApi(unittest.TestCase):
     def test_corrupted(self):
@@ -34,13 +39,11 @@ class TestApi(unittest.TestCase):
         tmp1.close()
         tmp2.close()
 
-import os
-import time
-import subprocess
+
 def setUpModule():
     subprocess.Popen(["./start_server", ">", "/dev/null", "2&>1"])
-    #check if something is listening on port 5000
+    # check if something is listening on port 5000
     while os.system("sudo lsof -i:5000") >> 8 != 0:
         time.sleep(1)
     print("Ready to run tests")
-    time.sleep(5) #flask still needs a couple of milliseconds even after starting to listen?
+    time.sleep(3)

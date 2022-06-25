@@ -22,7 +22,7 @@ def unoserver_convert(args: arguments.ConversionArguments):
                                 initializer=lambda: unoserver_worker.initialize_converters(args))
     res = pool.starmap_async(unoserver_worker.convert_to_pdf, zip(args.input_paths, repeat(args.output_folder)),
                              chunksize=1, callback=complete)
-    #track_job(res)
+    track_job(res)
     pool.close()
     pool.join()
     if args.kill:
