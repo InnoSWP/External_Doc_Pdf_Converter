@@ -18,7 +18,8 @@ def unoserver_convert(args: arguments.ConversionArguments):
         # This command creates a detached unoserver so that it doesn't shutdown when the script ends.
         os.system("nohup unoserver --port {} >/dev/null 2>&1 &".format(UNOSERVER_PORT + i))
     # We do not care about order, so we can use a pool of workers for conversion
-    pool = multiprocessing.Pool(processes=args.proc_count, initializer=unoserver_worker.initialize_converters)
+    pool = multiprocessing.Pool(processes=args.proc_count,
+                                initializer=lambda: unoserver_worker.initialize_converters(args))
     res = pool.starmap_async(unoserver_worker.convert_to_pdf, zip(args.input_paths, repeat(args.output_folder)),
                              chunksize=1, callback=complete)
     track_job(res)
