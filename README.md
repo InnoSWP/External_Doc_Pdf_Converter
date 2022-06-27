@@ -19,3 +19,10 @@ To install dependencies:
     rm -rf venv/
     docker build -t external_doc_pdf_converter .
     docker run -it -p 5000:5000 external_doc_pdf_converter
+
+## 🔧 Technologies & Tools
+![](https://img.shields.io/badge/OS-Linux-informational?style=flat&logo=linux&logoColor=white&color=2bbc8a)
+![](https://img.shields.io/badge/Code-Python-informational?style=flat&logo=Python&logoColor=white&color=2bbc8a)
+![](https://img.shields.io/badge/Linter-SonarCloud-informational?style=flat&logo=SonarCloud&logoColor=white&color=2bbc8a)
+![](https://img.shields.io/badge/Linter-SuperLinter-informational?style=flat&logo=Superlinter&logoColor=white&color=2bbc8a)
+![](https://img.shields.io/badge/Server-Unoserver-informational?style=flat&logo=unoserver&logoColor=white&color=2bbc8a)
