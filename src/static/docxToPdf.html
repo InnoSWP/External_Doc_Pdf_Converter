@@ -15,7 +15,9 @@
     <div class="rectangle">
         <div class="container2">
             <div class="text">
-                <h1>External Converter to .pdf</h1>
+                <h1>
+                    <a href="index.html" style="text-decoration: none; color: #fff;">External Converter to .pdf</a>
+                </h1>
             </div>
         </div>
     </div>
@@ -24,22 +26,31 @@
         <div class="container1">
             <div class="icons">
                 <div class="convert1">
-                    <img src="doc2.png" width="100px" height="100px">
+                    <img src="./images/doc2.png" width="100px" height="100px">
                 </div>
                 <div class="arrow">
-                    <img src="arrow.png" width="100px" height="100px">
+                    <img src="./images/arrow.png" width="100px" height="100px">
                 </div>
                 <div class="convert2">
-                    <img src="pdf.png" width="100px" height="100px">
+                    <img src="./images/pdf.png" width="100px" height="100px">
                 </div>
             </div>
             <div class="card">
                 <div class="container3">
                     <form action="/convert" enctype="multipart/form-data" method="post">
                         <label for="file" id="btn_main">Select file</label>
-                        <input type="file" id="file" class="input_file" name="file" multiple>
+                        <input type="file" id="file" class="input_file" name="file" multiple accept=".doc, .docx">
                         <input type="submit" id="btn_primary" value="Convert">
+                        <p id="numOfFiles"></p>
                     </form>
+                    <script>
+                        const fileSelector = document.getElementById('file');
+                        fileSelector.addEventListener('change', (event) => {
+                            const fileList = event.target.files.length;
+                            let numOfFiles = document.getElementById('numOfFiles');
+                            numOfFiles.textContent = fileList + " file(s) selected";
+                        });
+                    </script>
                 </div>
             </div>
         </div>
