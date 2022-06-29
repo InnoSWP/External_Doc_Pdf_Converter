@@ -9,7 +9,7 @@ def parse_console_arguments() -> arguments.ConversionArguments:
     parser.add_argument("infiles", nargs="+", type=utils.validate_file, help="documents to convert")
     parser.add_argument("-p", "--processes", nargs="?", type=int, help="number of processes for parallelization")
     parser.add_argument("-ct", "--convtype", nargs="?", type=str, default="unoserver",
-                        help="conversion type, either \"msoffice\" or \"unoserver\"")
+                        help="conversion type, currently only \"unoserver\"")
     parser.add_argument("-k", "--kill", action="store_true", help="kill convert server after conversion")
     parser.add_argument("-o", "--output-folder", type=Path, help="path where to store the converted documents")
     p = parser.parse_args()
