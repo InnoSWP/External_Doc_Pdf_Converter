@@ -143,3 +143,7 @@ input[type=file] {
     cursor: pointer;
     margin-top: 180px;
 }
+
+#numOfFiles {
+    font-size: 15px;
+}
