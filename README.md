@@ -13,8 +13,9 @@ Convert DOCX to PDF on a local machine.
 - -o [OUTPUT-FOLDER], --output-folder [OUTPUT-FOLDER]: Directory where to store the converted documents.
 - infiles: List of files to convert, which must end in .xls or .docx. .xls conversion works only with msoffice conversion method.
 
-
-    start_server
+```
+start_server
+```
  - Starts the flask server.
 
 ## ✏️ Features
@@ -24,7 +25,7 @@ Convert DOCX to PDF on a local machine.
 | converting .doc files                        |     ✅     |
 | converting .xls files                        |     ✅     |
 | sending multiple files                       |     ✅     |
-| converting with different languages texts    |     ❌     |
+| converting with different languages texts    |     ✅     |
 | converting of files with different encodings |     ✅     |
 | returning status codes                       |     ✅     |
 
