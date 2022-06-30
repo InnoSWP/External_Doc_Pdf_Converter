@@ -29,11 +29,11 @@ start_server
 | converting of files with different encodings |     ✅     |
 | returning status codes                       |     ✅     |
 
-1) Install the requirements
-1a) Optionally, install all the fonts that will be used in conversions.
-2a) If you want to run the converter as CLI tool, just use it using docx_to_pdf script, it will create the virtual environment on the first start.
-2b) If you want to run the converter as a server, just run start_server and wait until it loads.
-2c) Additionally, you can run the server as a docker converter, see the next section for details.
+1. Install the requirements
+  * Optionally, install all the fonts that will be used in conversions.
+2. If you want to run the converter as CLI tool, just use it using docx_to_pdf script, it will create the virtual environment on the first start.
+  * Optionally, if you want to run the converter as a server, just run start_server and wait until it loads.
+  * Additionally, you can run the server as a docker converter, see the next section for details.
 
 ## 🐳 Running server inside docker container
     rm -rf venv/
