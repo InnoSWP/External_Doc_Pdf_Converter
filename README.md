@@ -34,7 +34,7 @@ start_server
 apt-get install libreoffice python3 python3-venv python3-pip -y
 ```
   * Optionally, install all the fonts that will be used in conversions.
-2. If you want to run the converter as CLI tool, just use it using docx_to_pdf script, it will create the virtual environment on the first start.
+2. If you want to run the converter as CLI tool, just use it using docx_to_pdf script, it will create the virtual environment and install all python requirements on the first start.
   * Optionally, if you want to run the converter as a server, just run start_server and wait until it loads.
   * Additionally, you can run the server as a docker converter, see the next section for details.
 
