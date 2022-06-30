@@ -29,20 +29,26 @@ start_server
 | converting of files with different encodings |     ✅     |
 | returning status codes                       |     ✅     |
 
-## ⚙️ Project Instalation
-...
+1. Install the requirements
+```
+apt-get install libreoffice python3 python3-venv python3-pip -y
+```
+  * Optionally, install all the fonts that will be used in conversions.
+2. If you want to run the converter as CLI tool, just use it using docx_to_pdf script, it will create the virtual environment and install all python requirements on the first start.
+  * Optionally, if you want to run the converter as a server, just run start_server and wait until it loads.
+  * Additionally, you can run the server as a docker converter, see the next section for details.
 
 ## 🐳 Running server inside docker container
     rm -rf venv/
     docker build -t external_doc_pdf_converter .
-    docker run -it -p 5000:5000 external_doc_pdf_converter
+    docker run -d -p <desired_port>:5000 external_doc_pdf_converter
 
 ## 🎛️ Requirements
 Requires LibreOffice and python3 (with pip) installed.
 To install dependencies:
-
-    sudo scripts/setup_environment
-
+```
+apt-get install libreoffice python3 python3-venv python3-pip -y
+```
 ## 🔧 Technologies & Tools
 ![OS Linux](https://img.shields.io/badge/OS-Linux-informational?style=flat&logo=linux&logoColor=white&color=2bbc8a)
 ![Code Python](https://img.shields.io/badge/Code-Python-informational?style=flat&logo=Python&logoColor=white&color=2bbc8a)

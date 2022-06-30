@@ -6,4 +6,3 @@ __pycache__/
 !tests/*.pdf
 .gitsecret/keys/random_seed
 !*.secret
-fonts.tar.gz
