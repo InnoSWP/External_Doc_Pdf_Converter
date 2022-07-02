@@ -29,6 +29,8 @@ start_server
 | converting of files with different encodings |     ✅     |
 | returning status codes                       |     ✅     |
 
+## ⚙️ Project Instalation
+
 1. Install the requirements
 ```
 apt-get install libreoffice python3 python3-venv python3-pip -y
