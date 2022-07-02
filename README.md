@@ -1,5 +1,5 @@
 # 📚 Project Description
-Convert DOCX to PDF on a local machine.
+Customer began managing electronic papers. As a result, they need various programs for this. One of the goals was to have the documents include an electronic signature. They have to convert the document from doc or xls to pdf in order to display the signature in the right way. Additionally, PDF provides the assurance that the original material has not been modified. However, information security prevented the consumer from using third-party services.
 
 ## 🎬 Demo
 
