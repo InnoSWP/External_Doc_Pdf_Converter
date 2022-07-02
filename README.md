@@ -59,3 +59,9 @@ apt-get install libreoffice python3 python3-venv python3-pip -y
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=InnoSWP_External_Doc_Pdf_Converter&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=InnoSWP_External_Doc_Pdf_Converter)
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=InnoSWP_External_Doc_Pdf_Converter&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=InnoSWP_External_Doc_Pdf_Converter)
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=InnoSWP_External_Doc_Pdf_Converter&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=InnoSWP_External_Doc_Pdf_Converter)
+
+## 📃 License
+
+[![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/InnoSWP/External_Doc_Pdf_Converter/blob/main/LICENSE)
+
+Users are expressly allowed to reuse code for any purpose, even if it is a part of proprietary software, under the terms of the MIT license. As long as they provide the original copy of the MIT license, users are allowed to modify the code to suit their own needs. The MIT license must be copied by developers and placed in the appropriate places in source files. Because of its open wording, the MIT License is suitable for both teams and community developers who want to produce proprietary software using pre-existing MIT licensed code.
