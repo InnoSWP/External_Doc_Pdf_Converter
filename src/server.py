@@ -17,7 +17,7 @@ def get_static_resource(path):
 
 @app.route("/")
 def main():
-    return redirect('/index.html')
+    return redirect("/docxToPdf.html")
 
 
 @app.route("/convert", methods=["POST"])
