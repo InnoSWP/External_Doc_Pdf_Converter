@@ -23,7 +23,7 @@ start_server
 | Feature                                      | Supported |
 |----------------------------------------------|:---------:|
 | converting .doc files                        |     ✅     |
-| converting .xls files                        |     ✅     |
+| converting .xls files                        |     ❌     |
 | sending multiple files                       |     ✅     |
 | converting with different languages texts    |     ✅     |
 | converting of files with different encodings |     ✅     |
